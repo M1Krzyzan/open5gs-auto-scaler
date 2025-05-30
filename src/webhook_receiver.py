@@ -1,3 +1,5 @@
+import json
+
 from fastapi import FastAPI, Request
 
 app = FastAPI()
@@ -14,7 +16,7 @@ async def receive_webhook(request: Request):
     - create patch request to scale UPF pod
     """
     with open("logs.txt", "w") as file:
-        file.write(payload.dumps(payload, indent=2))
+        file.write(json.dumps(payload, indent=2))
     return {"status":"received"}
 
 def get_upf_pod_name() -> str:
