@@ -21,5 +21,5 @@ def get_upf_pod_name() -> str:
 def scale_upf_pod(upf_pod_name: str, cpu_limit: int):
     pass
 
-def get_current_upf_cpu_limit() -> int:
+def get_current_upf_cpu_limit(upf_pod_name: str) -> int:
     pass
