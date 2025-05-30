@@ -1,1 +1,1 @@
-"# open5gs-auto-scaler" 
+# Auto scaler for open5gs UPF
