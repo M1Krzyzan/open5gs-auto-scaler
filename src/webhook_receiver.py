@@ -13,6 +13,8 @@ async def receive_webhook(request: Request):
     - get name of upf pod
     - create patch request to scale UPF pod
     """
+    with open("logs.txt", "w") as file:
+        file.write(payload.dumps(payload, indent=2))
     return {"status":"received"}
 
 def get_upf_pod_name() -> str:
