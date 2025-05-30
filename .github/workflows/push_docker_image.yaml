@@ -27,4 +27,4 @@ jobs:
           context: .
           platforms: linux/arm64
           push: true
-          tags: ${{ secrets.DOCKER_PASSWORD }}/webhook-receiver:arm
+          tags: michkrzyzan/webhook-receiver:arm
