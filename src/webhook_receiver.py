@@ -21,10 +21,18 @@ async def receive_webhook(request: Request):
     - get name of upf pod
     - create patch request to scale UPF pod
     """
-    print(payload["alerts"])
+    if payload["alerts"][0]["status"] == "resolved":
+        return {"status": "success"}
+
+    amf_sessions = payload["alerts"][0]["values"]["A"]
+
+    print("AMF_SESSIONS:", amf_sessions)
+
     if (upf_pod_name := get_upf_pod_name()) is None:
         print("No upf pod in cluster")
     print(upf_pod_name)
+
+    print(get_current_upf_cpu_limit(upf_pod_name))
 
     return {"status": "received"}
 
@@ -41,9 +49,9 @@ def scale_upf_pod(upf_pod_name: str, cpu_limit: int):
     pass
 
 
-def get_current_upf_cpu_limit(upf_pod_name: str) -> int:
+def get_current_upf_cpu_limit(upf_pod_name: str) -> Optional[str]:
     pod = v1.read_namespaced_pod(name = upf_pod_name,namespace = "default")
     containers = pod.spec.containers
     for container in containers:
-        upf_cpu_limit = container.resources.limits
-        return int(upf_cpu_limit)
+        upf_cpu_limit = container.resources.limits.get("cpu")
+        return upf_cpu_limit
