@@ -1,0 +1,10 @@
+scaling_policy:
+  - threshold: 4 #num of amf_sessions
+    resources:
+      cpu: "100m"
+  - threshold: 8
+    resources:
+      cpu: "250m"
+  - threshold: 12
+    resources:
+      cpu: "500m"

@@ -1,6 +1,6 @@
-import json
 from typing import Optional
 
+import yaml
 from kubernetes import client, config
 from fastapi import FastAPI, Request
 
@@ -16,11 +16,7 @@ async def receive_webhook(request: Request):
     payload = await request.json()
     """
     main logic of webhook receiver:
-    - parse request body
-    - get value of amf sessions
     - load file with scaling policy
-    - get name of upf pod
-    - create patch request to scale UPF pod
     """
     if payload["alerts"][0]["status"] == "resolved":
         return {"status": "success"}
@@ -31,9 +27,35 @@ async def receive_webhook(request: Request):
 
     if (upf_pod_name := get_upf_pod_name()) is None:
         print("No upf pod in cluster")
-    print(upf_pod_name)
 
-    print(get_current_upf_cpu_limit(upf_pod_name))
+    with open("scaling_policy.yaml", "r") as file:
+        data = yaml.safe_load(file)
+        scaling_policy = data["scaling_policy"]
+
+    scaling_policy = sorted(scaling_policy, key=lambda x: x["threshold"])
+
+    cpu_limit = ""
+
+    for policy in scaling_policy:
+        if (threshold := policy.get("threshold")) is None:
+            print("No threshold in policy")
+            return {"status": "failure"}
+
+        if threshold > amf_sessions:
+            break
+
+        if (resources := policy.get("resources")) is None:
+            print("No resources in policy")
+            return {"status": "failure"}
+
+        if (cpu_limit := resources.get("cpu_limit")) is None:
+            print("No cpu limit in resources")
+            return {"status": "failure"}
+
+    current_cpu_limit = get_current_upf_cpu_limit(upf_pod_name)
+
+    if current_cpu_limit == cpu_limit or cpu_limit == "":
+        return {"status": "received"}
 
     scale_upf_pod(upf_pod_name, "200m")
 
@@ -72,8 +94,17 @@ def scale_upf_pod(upf_pod_name: str, cpu_limit: str):
         response_type="object",
         auth_settings=["BearerToken"]
     )
+    containers = response[0].get("spec", {}).get("containers", [])
+    cpu_limit_found = False
+    for c in containers:
+        limits = c.get("resources", {}).get("limits", {})
+        if "cpu" in limits:
+            cpu_limit_found = True
+            print(f"Container '{c.get('name')}' CPU limit patched to: {limits['cpu']}")
 
-    print("Resize response:", response)
+    if not cpu_limit_found:
+        print("No CPU limit found in the patched response.")
+
 
 
 def get_current_upf_cpu_limit(upf_pod_name: str) -> Optional[str]:
