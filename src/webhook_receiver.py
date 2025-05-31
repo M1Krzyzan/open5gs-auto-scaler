@@ -48,7 +48,7 @@ async def receive_webhook(request: Request):
             print("No resources in policy")
             return {"status": "failure"}
 
-        if (cpu_limit := resources.get("cpu_limit")) is None:
+        if (cpu_limit := resources.get("cpu")) is None:
             print("No cpu limit in resources")
             return {"status": "failure"}
 
