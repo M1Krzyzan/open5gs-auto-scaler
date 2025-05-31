@@ -8,6 +8,7 @@ app = FastAPI()
 
 config.load_incluster_config()
 v1 = client.CoreV1Api()
+api_client = client.ApiClient()
 
 
 @app.post("/alert")
@@ -34,6 +35,8 @@ async def receive_webhook(request: Request):
 
     print(get_current_upf_cpu_limit(upf_pod_name))
 
+    scale_upf_pod(upf_pod_name, "200m")
+
     return {"status": "received"}
 
 
@@ -45,8 +48,32 @@ def get_upf_pod_name() -> Optional[str]:
     return None
 
 
-def scale_upf_pod(upf_pod_name: str, cpu_limit: int):
-    pass
+def scale_upf_pod(upf_pod_name: str, cpu_limit: str):
+    patch_body = {
+        "spec": {
+            "containers": [
+                {
+                    "name": "open5gs-upf",
+                    "resources": {
+                        "limits": {
+                            "cpu": cpu_limit
+                        }
+                    }
+                }
+            ]
+        }
+    }
+
+    response = api_client.call_api(
+        f"/api/v1/namespaces/default/pods/{upf_pod_name}/resize",
+        "PATCH",
+        body=patch_body,
+        header_params={"Content-Type": "application/strategic-merge-patch+json"},
+        response_type="object",
+        auth_settings=["BearerToken"]
+    )
+
+    print("Resize response:", response)
 
 
 def get_current_upf_cpu_limit(upf_pod_name: str) -> Optional[str]:
