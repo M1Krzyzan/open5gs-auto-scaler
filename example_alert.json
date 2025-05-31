@@ -1,0 +1,66 @@
+{
+  "receiver": "AMF sessions scale trigger",
+  "status": "firing",
+  "alerts": [
+    {
+      "status": "firing",
+      "labels": {
+        "alertname": "Change Detected in amf_sessions",
+        "container": "open5gs-amf",
+        "endpoint": "metrics",
+        "grafana_folder": "Default",
+        "instance": "10.42.1.203:9090",
+        "job": "open5gs-amf-metrics",
+        "namespace": "default",
+        "pod": "open5gs-amf-57c6c6c65b-5nsj6",
+        "service": "open5gs-amf-metrics"
+      },
+      "annotations": {},
+      "startsAt": "2025-05-31T11:23:30Z",
+      "endsAt": "0001-01-01T00:00:00Z",
+      "generatorURL": "http://localhost:3000/alerting/grafana/dengjxfca3da8b/view?orgId=1",
+      "fingerprint": "3afb9afeac440e31",
+      "silenceURL": "http://localhost:3000/alerting/silence/new?alertmanager=grafana&matcher=alertname%3DChange+Detected+in+amf_sessions&matcher=container%3Dopen5gs-amf&matcher=endpoint%3Dmetrics&matcher=grafana_folder%3DDefault&matcher=instance%3D10.42.1.203%3A9090&matcher=job%3Dopen5gs-amf-metrics&matcher=namespace%3Ddefault&matcher=pod%3Dopen5gs-amf-57c6c6c65b-5nsj6&matcher=service%3Dopen5gs-amf-metrics&orgId=1",
+      "dashboardURL": "",
+      "panelURL": "",
+      "values": {
+        "A": 9,
+        "B": 10,
+        "E": 1
+      },
+      "valueString": "[ var='A' labels={__name__=amf_session, container=open5gs-amf, endpoint=metrics, instance=10.42.1.203:9090, job=open5gs-amf-metrics, namespace=default, pod=open5gs-amf-57c6c6c65b-5nsj6, service=open5gs-amf-metrics} value=9 ], [ var='B' labels={container=open5gs-amf, endpoint=metrics, instance=10.42.1.203:9090, job=open5gs-amf-metrics, namespace=default, pod=open5gs-amf-57c6c6c65b-5nsj6, service=open5gs-amf-metrics} value=10 ], [ var='E' labels={container=open5gs-amf, endpoint=metrics, instance=10.42.1.203:9090, job=open5gs-amf-metrics, namespace=default, pod=open5gs-amf-57c6c6c65b-5nsj6, service=open5gs-amf-metrics} value=1 ]"
+    }
+  ],
+  "groupLabels": {
+    "__alert_rule_uid__": "dengjxfca3da8b",
+    "alertname": "Change Detected in amf_sessions",
+    "container": "open5gs-amf",
+    "endpoint": "metrics",
+    "grafana_folder": "Default",
+    "instance": "10.42.1.203:9090",
+    "job": "open5gs-amf-metrics",
+    "namespace": "default",
+    "pod": "open5gs-amf-57c6c6c65b-5nsj6",
+    "service": "open5gs-amf-metrics"
+  },
+  "commonLabels": {
+    "alertname": "Change Detected in amf_sessions",
+    "container": "open5gs-amf",
+    "endpoint": "metrics",
+    "grafana_folder": "Default",
+    "instance": "10.42.1.203:9090",
+    "job": "open5gs-amf-metrics",
+    "namespace": "default",
+    "pod": "open5gs-amf-57c6c6c65b-5nsj6",
+    "service": "open5gs-amf-metrics"
+  },
+  "commonAnnotations": {},
+  "externalURL": "http://localhost:3000/",
+  "version": "1",
+  "groupKey": "{}/{alertname=\"Change Detected in amf_sessions\"}:{__alert_rule_uid__=\"dengjxfca3da8b\", alertname=\"Change Detected in amf_sessions\", container=\"open5gs-amf\", endpoint=\"metrics\", grafana_folder=\"Default\", instance=\"10.42.1.203:9090\", job=\"open5gs-amf-metrics\", namespace=\"default\", pod=\"open5gs-amf-57c6c6c65b-5nsj6\", service=\"open5gs-amf-metrics\"}",
+  "truncatedAlerts": 0,
+  "orgId": 1,
+  "title": "[FIRING:1] Change Detected in amf_sessions dengjxfca3da8b open5gs-amf metrics Default 10.42.1.203:9090 open5gs-amf-metrics default open5gs-amf-57c6c6c65b-5nsj6 open5gs-amf-metrics ",
+  "state": "alerting",
+  "message": "**Firing**\n\nValue: A=9, B=10, E=1\nLabels:\n - alertname = Change Detected in amf_sessions\n - container = open5gs-amf\n - endpoint = metrics\n - grafana_folder = Default\n - instance = 10.42.1.203:9090\n - job = open5gs-amf-metrics\n - namespace = default\n - pod = open5gs-amf-57c6c6c65b-5nsj6\n - service = open5gs-amf-metrics\nAnnotations:\nSource: http://localhost:3000/alerting/grafana/dengjxfca3da8b/view?orgId=1\nSilence: http://localhost:3000/alerting/silence/new?alertmanager=grafana&matcher=alertname%3DChange+Detected+in+amf_sessions&matcher=container%3Dopen5gs-amf&matcher=endpoint%3Dmetrics&matcher=grafana_folder%3DDefault&matcher=instance%3D10.42.1.203%3A9090&matcher=job%3Dopen5gs-amf-metrics&matcher=namespace%3Ddefault&matcher=pod%3Dopen5gs-amf-57c6c6c65b-5nsj6&matcher=service%3Dopen5gs-amf-metrics&orgId=1\n"
+}
