@@ -57,7 +57,7 @@ async def receive_webhook(request: Request):
     if current_cpu_limit == cpu_limit or cpu_limit == "":
         return {"status": "received"}
 
-    scale_upf_pod(upf_pod_name, "200m")
+    scale_upf_pod(upf_pod_name, cpu_limit, current_cpu_limit)
 
     return {"status": "received"}
 
@@ -70,7 +70,7 @@ def get_upf_pod_name() -> Optional[str]:
     return None
 
 
-def scale_upf_pod(upf_pod_name: str, cpu_limit: str):
+def scale_upf_pod(upf_pod_name: str, cpu_limit: str, current_cpu_limit: str) -> None:
     patch_body = {
         "spec": {
             "containers": [
@@ -100,7 +100,7 @@ def scale_upf_pod(upf_pod_name: str, cpu_limit: str):
         limits = c.get("resources", {}).get("limits", {})
         if "cpu" in limits:
             cpu_limit_found = True
-            print(f"Container '{c.get('name')}' CPU limit patched to: {limits['cpu']}")
+            print(f"Container '{c.get('name')}' CPU limit patched from: {current_cpu_limit} to: {limits['cpu']}")
 
     if not cpu_limit_found:
         print("No CPU limit found in the patched response.")
