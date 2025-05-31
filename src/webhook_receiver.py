@@ -32,7 +32,7 @@ async def receive_webhook(request: Request):
 def get_upf_pod_name() -> Optional[str]:
     pod_list = v1.list_pod_for_all_namespaces(watch=False)
     for pod in pod_list.items:
-        if pod.name.startswith("open5gs-upf"):
+        if pod.metadata.name.startswith("open5gs-upf"):
             return pod.metadata.name
     return None
 
@@ -42,4 +42,8 @@ def scale_upf_pod(upf_pod_name: str, cpu_limit: int):
 
 
 def get_current_upf_cpu_limit(upf_pod_name: str) -> int:
-    pass
+    pod = v1.read_namespaced_pod(name = upf_pod_name,namespace = "default")
+    containers = pod.spec.containers
+    for container in containers:
+        upf_cpu_limit = container.resources.limits
+        return int(upf_cpu_limit)
