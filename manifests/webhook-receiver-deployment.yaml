@@ -1,0 +1,20 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: webhook-receiver
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: webhook-receiver
+  template:
+    metadata:
+      labels:
+        app: webhook-receiver
+    spec:
+      serviceAccountName: webhook-receiver-sa
+      containers:
+        - name: webhook-receiver
+          image: docker.io/michkrzyzan/webhook-receiver:arm
+          ports:
+            - containerPort: 8080
